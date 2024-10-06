@@ -1,0 +1,24 @@
+#login system
+
+import tkinter as tk
+
+
+win = tk.Tk()
+win.title("Login Me")
+win.geometry("500x400+760+340")
+win.configure(bg="pink")
+label1 = tk.Label(win,text="Username",font=("timesnewroman",10,),fg="black",bg="white",bd = 2)
+label2 = tk.Label(win,text="Password",font=("timesnewroman",10,),fg="black",bg="white",bd = 2)
+entry1 = tk.Entry(win,font=("timesnewroman",10,),fg="black",bg="white",width=30,bd = 2,relief=tk.SUNKEN)
+entry2 = tk.Entry(win,font=("timesnewroman",10,),fg="black",bg="white",width=30,bd = 2,relief=tk.SUNKEN,show="*")
+button = tk.Button(win,text="Submit",font=("timesnewroman",10,),fg="Black",bg="white",command = win.destroy,relief=tk.RAISED)
+label1.place(x=100,y=75)
+label2.place(x=100,y=100)
+button.place(x=100,y=125)
+entry1.place(x=180,y=75)
+entry2.place(x=180,y=100)
+
+
+
+
+win.mainloop()
