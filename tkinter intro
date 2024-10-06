@@ -1,0 +1,27 @@
+#tkinter intro
+
+import tkinter as tk
+
+
+win = tk.Tk()
+win.title("Button")
+win.geometry("400x400+760+340")
+win.configure(bg="palegreen")
+but = tk.Button(win,text="Click here",font=("timesnewroman",10,),fg="red",bg="pink",width=15,height=5,command = win.destroy,relief=tk.RAISED)
+#but.pack
+#but.place(x=150,y=100)
+but.grid(row=3,column=1,columnspan=2)
+label = tk.Label(win,text="Here is some text",font=("timesnewroman",10,),fg="red",bg="pink",width=15,height=5,bd = 2)
+label.grid(row=2,column=3)
+entry = tk.Entry(win,font=("timesnewroman",10,),fg="red",bg="lightblue",width=15,bd = 2,relief=tk.SUNKEN)
+entry.grid(row=4,column=2)
+
+
+
+
+
+
+
+
+
+win.mainloop()
