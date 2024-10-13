@@ -1,0 +1,38 @@
+from tkinter import *
+import calendar
+
+def makecalendar():
+    win2 = Tk()
+    win2.config(bg="white")
+    entrydata = int(entry.get())
+    win2.title("Calendar"+str(entrydata))
+    win2.geometry("550x600+750+300")
+    year_details = calendar.calendar(entrydata)
+    text = Text(win2,font=("consolas 10"),wrap="none",height=60,width=80)
+    text.insert("1.0",year_details)
+    text.grid(row=1,column=1)
+    win2.mainloop()
+
+
+
+win = Tk()
+win.config(bg="white")
+win.title("Calendar")
+win.geometry("+750+300")
+label1 = Label(win,text="CALENDAR",font=("timesnewroman",60,"bold"),bg="grey",fg="black")
+label2 = Label(win,text="Enter the year:",font=("timesnewroman",36,"normal"),bg="yellow",fg="black")
+entry = Entry(win,font=("timesnewroman",30,"normal"))
+but1 = Button(win,text="Submit",font=("timesnewroman",36,"normal"),bg="red",fg="black",command=makecalendar)
+but2 = Button(win,text="Exit",font=("timesnewroman",36,"normal"),bg="red",fg="black",command=win.destroy)
+label1.pack()
+label2.pack()
+entry.pack()
+but1.pack()
+but2.pack()
+
+
+
+
+
+win.mainloop()
+
