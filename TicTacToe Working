@@ -1,0 +1,55 @@
+from tkinter import *
+from tkinter import messagebox
+
+
+
+class gameloop():
+    def __init__(self,win):
+        self.win = win
+        self.win.title("TicTacToe")
+        self.player = "X"
+        self.buttons = [[None for _ in range(3)] for _ in range(3)]
+        self.makebuttons()
+    def makebuttons(self):
+        for row in range(3):
+            for col in range(3):
+                button = Button(self.win,text="",font=("normal",30), width=5, height=2,command=lambda r=row,c=col:self.click(r,c))
+                button.grid(row=row,column=col)
+                self.buttons[row][col] = button
+    def click(self,row,col):       
+        if self.buttons[row][col]["text"] == "" and not self.checkwinner():
+            self.buttons[row][col]["text"] = self.player#issue
+            if self.checkwinner():
+                messagebox.showinfo(title="Well done!",message=f"{self.player} wins")
+                self.empty_boxes()
+            elif self.check_full():
+                messagebox.showinfo(message=f"Draw")
+                self.empty_boxes()
+            else:
+                self.player="O" if self.player =="X" else "X"
+    
+    def checkwinner(self):
+        for row in range(3):
+            if self.buttons[row][0]["text"] == self.buttons[row][1]["text"] == self.buttons[row][2]["text"] !="":
+                return True
+        for col in range(3):
+            if self.buttons[0][col]["text"] == self.buttons[1][col]["text"] == self.buttons[2][col]["text"] !="":
+                return True
+        if self.buttons[0][0]["text"] == self.buttons[1][1]["text"] == self.buttons[2][2]["text"] !="":
+            return True
+        if self.buttons[0][2]["text"] == self.buttons[1][1]["text"] == self.buttons[2][0]["text"] !="":
+            return True
+        return False
+    def check_full(self):
+        return all(self.buttons[row][col]["text"] != "" for row in range (3) for col in range (3))
+    def empty_boxes(self):
+        for row in range(3):
+            for col in range(3):
+                self.buttons[row][col]["text"] = ""
+        self.player = "X"
+    
+    
+if __name__ == "__main__":
+    win = Tk()
+    runtime = gameloop(win)
+    mainloop()
