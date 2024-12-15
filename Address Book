@@ -1,0 +1,108 @@
+from tkinter import *
+from tkinter import messagebox
+from tkinter.filedialog import *
+
+win = Tk()
+win.title("Address book")
+contents = {}
+
+def delete_fields():
+    entry_address.delete(0,END)
+    entry_name.delete(0,END)
+    entry_mobile.delete(0,END)
+    entry_email.delete(0,END)
+    entry_birthday.delete(0,END)
+
+def update_listbox():
+    key = entry_name.get()
+    if key == "":
+        messagebox.showinfo(title = "Error",message = "Error - Name field cannot be empty")
+    else:
+        if key not in contents.keys():
+            listbox.insert(END,key)
+        contents[key] = (entry_address.get(), entry_mobile.get(), entry_email.get(), entry_birthday.get())
+        delete_fields()
+
+def edit():
+    delete_fields()
+    selection = listbox.curselection()
+    if selection:
+        entry_name.insert(0,listbox.get(selection))
+        temp = contents[entry_name.get()]
+        entry_address.insert(0,temp[0])
+        entry_mobile.insert(0,temp[1])
+        entry_email.insert(0,temp[2])
+        entry_birthday.insert(0,temp[3])
+    else:
+        messagebox.showinfo(title="Error",message="Error - Must select a name")
+
+def delete_but_function():
+    selection = listbox.curselection()
+    if selection:
+        del contents[listbox.get(selection)]
+        listbox.delete(selection)
+        delete_fields()
+    else:
+        delete_fields()
+
+def reset():
+    delete_fields()
+    listbox.delete(0,END)
+    contents.clear()
+
+def save():
+    data = asksaveasfile(defaultextension=".txt")
+    if data:
+        print(contents,file=data)
+        reset()
+    else:
+        messagebox.showinfo(title="Warning",message="Warning. Address book is not saved")
+
+def open():
+    reset()
+    data = askopenfile(defaultextension=".txt")
+    if data:
+        contents = eval(data.read())
+        for i in contents.keys():
+            listbox.insert(0,i)
+    else:
+        messagebox.showinfo(title="Warning",message="Warning. No address book has been opened")
+
+title = Label(win, text="My Address Book")
+open_but = Button(win,text="Open",command=open)
+listbox = Listbox(win)
+lab_name = Label(win, text="Name:")
+lab_address = Label(win, text="Address:")
+lab_mobile = Label(win, text="Mobile:")
+lab_email = Label(win, text="Email:")
+lab_birthday = Label(win, text="Birthday:")
+entry_name = Entry(win)
+entry_address = Entry(win)
+entry_mobile = Entry(win)
+entry_email = Entry(win)
+entry_birthday = Entry(win)
+edit_but = Button(win,text="Edit",command=edit)
+delete_but = Button(win,text="Delete",command=delete_but_function)
+update_but = Button(win,text="Update/Add",command=update_listbox)
+save_but = Button(win,text="Save",width=20,command=save)
+
+title.grid(column=1,row=0,pady=2,padx=2)
+open_but.grid(column=2,row=0,pady=2,padx=2)
+listbox.grid(column=0,row=1,columnspan=2,rowspan=5,pady=2,padx=2)##
+lab_name.grid(column=2,row=1,pady=2,padx=2)
+lab_address.grid(column=2,row=2,pady=2,padx=2)
+lab_mobile.grid(column=2,row=3,pady=2,padx=2)
+lab_email.grid(column=2,row=4,pady=2,padx=2)
+lab_birthday.grid(column=2,row=5,pady=2,padx=2)
+entry_name.grid(column=3,row=1,pady=2,padx=2)
+entry_address.grid(column=3,row=2,pady=2,padx=2)
+entry_mobile.grid(column=3,row=3,pady=2,padx=2)
+entry_email.grid(column=3,row=4,pady=2,padx=2)
+entry_birthday.grid(column=3,row=5,pady=2,padx=2)
+edit_but.grid(column=0,row=6,pady=2,padx=2)
+delete_but.grid(column=1,row=6,pady=2,padx=2)
+update_but.grid(column=3,row=6,pady=2,padx=2)
+save_but.grid(column=1,row=7,columnspan=2,pady=2,padx=2)##
+
+
+win.mainloop()
