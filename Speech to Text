@@ -1,0 +1,42 @@
+#Speech to text
+
+from tkinter import *
+import speech_recognition as sr
+from tkinter import messagebox
+from tkinter.filedialog import *
+
+def start_rec():
+    speech = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Start talking")
+        speech.pause_threshold = 2
+        listen = speech.listen(source)
+        try:
+            text = speech.recognize_google(listen)
+        except:
+            text = "Sorry, unable to transcribe audio"
+        textbox.insert(END,text)
+
+def save():
+    data = asksaveasfile(defaultextension=".txt")
+    if data:
+        print(textbox.get(0,END),file=data)
+        textbox.delete(0,END)
+    else:
+        messagebox.showinfo(title="Warning",message="Warning. Address book is not saved")
+
+
+
+win = Tk()
+win.title("Text To Speech")
+title = Label(win,text="Voice Notepad",font=40)
+start_but = Button(win,text="Click here to start recording!",font=20,command=start_rec)
+textbox = Text(win,height=4,width=50,font=20)
+save_but = Button(win,text="Click here to save recording",font=20,command=save)
+
+title.grid(column=1,row=0,padx=5,pady=5)
+start_but.grid(column=0,row=1,padx=5,pady=5)
+textbox.grid(column=1,row=1,padx=5,pady=5)
+save_but.grid(column=2,row=1,padx=5,pady=5)
+
+win.mainloop()
