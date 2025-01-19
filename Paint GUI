@@ -1,0 +1,61 @@
+
+from tkinter import *
+from tkinter.colorchooser import askcolor
+
+
+
+
+class Paint():
+    def __init__(self):
+        self.win = Tk()
+        self.win.title("Draw GUI") 
+        self.pen = Button(self.win,text="Pen",command=self.use_pen)
+        self.colour = Button(self.win,text="Colour",command=self.use_colour)
+        self.eraser = Button(self.win,text="Eraser",command=self.use_eraser)
+        self.size = Scale(self.win,from_=1,to=10)
+        self.canvas = Canvas(self.win,bg="white",width=500,height=400)
+
+        self.pen.grid(row=0,column=0)
+        self.colour.grid(row=0,column=1)
+        self.eraser.grid(row=0,column=2)
+        self.size.grid(row=0,column=3)
+        self.canvas.grid(row=1,column=0,columnspan=4)
+
+        self.setup()
+
+        self.win.mainloop()
+    def setup(self):
+        self.l_posx = None
+        self.l_posy = None
+        self.width = self.size.get()
+        self.colour = "Black"
+        self.active_BTN = self.pen
+        self.active_BTN.config(relief=SUNKEN)
+        self.eraser_toggle = False
+        self.canvas.bind("<B1-Motion>",self.draw)
+        self.canvas.bind("<ButtonRelease-1>",self.reset)
+    def draw(self,event):
+        self.width = self.size.get()
+        picked_colour = "white" if self.eraser_toggle else self.colour
+        if self.l_posx and self.l_posy:
+            self.canvas.create_line(self.l_posx,self.l_posy,event.x,event.y,width=self.width,fill=picked_colour,capstyle=ROUND,smooth=True,splinesteps=36)
+        self.l_posx,self.l_posy = event.x,event.y
+    def reset(self,event):
+        self.l_posx = None
+        self.l_posy = None
+    def button_toggle(self,button):
+        self.active_BTN.config(relief=RAISED)
+        button.config(relief=SUNKEN)
+        self.active_BTN = button
+    def use_pen(self):
+        self.button_toggle(self.pen)
+        self.eraser_toggle = False
+    def use_eraser(self):
+        self.button_toggle(self.eraser)
+        self.eraser_toggle = True
+    def use_colour(self):
+        self.eraser_toggle = False
+        self.colour = askcolor(color=self.colour)[1]
+
+if __name__ == '__main__':
+    Paint()
