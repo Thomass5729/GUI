@@ -1,0 +1,71 @@
+import random
+from tkinter import *
+from tkinter import messagebox
+
+win = Tk()
+
+win.title("Pong tkinter")
+
+win.wm_attributes("-topmost",1)
+
+
+canvas = Canvas(win,width=600,height=500,bd=1,bg="black")
+
+canvas.pack()
+scoreL = canvas.create_text(300,25,font=("arial",20,"bold"),text="0:0",fill="white")
+canvas.create_line(300,0,300,500,fill="white")
+canvas.create_oval(200,150,400,350,outline="white")
+
+class Ball():
+    def __init__(self,canvas,paddle1,paddle2):
+        self.canvas = canvas
+        self.paddle1 = paddle1
+        self.paddle2 = paddle2 
+        self.id = canvas.create_oval(290,240,310,260,fill="white")
+        #self.canvas.move(self.id,)
+        speeds = [-3,-2,-1,1,2,3]
+        random.shuffle(speeds)
+        self.x=speeds[1]
+        self.y=speeds[2]
+        self.score1 = 0
+        self.score2 = 0
+        self.canvasheight = self.canvas.winfo_height()
+        self.canvaswidth = self.canvas.winfo_width()
+    def draw(self):
+        self.canvas.move(self.id,self.x,self.y)
+        pos = self.canvas.coords(self.id)
+        if pos[1] <= 0:
+            self.y = 4
+        elif pos[3] >= 500:
+            self.y = -4
+        elif pos[0] <= 0:
+            self.x = 4
+            self.score2+=1
+            canvas.itemconfigure(scoreL,text=f"{self.score1}:{self.score2}")
+        elif pos[4] >= 600:
+            self.x = -4
+            self.score1+=1
+            canvas.itemconfigure(scoreL,text=f"{self.score1}:{self.score2}")
+    def paddle1hit(self,pos):
+        p1pos = self.canvas.coords(self.paddle1.id)
+        if pos[1] >= p1pos[1] and pos[3] <= p1pos[3]:
+            if pos[0] <= p1pos[2]:
+                return True
+            else:
+                return False
+        else:
+            return False
+    def paddle2hit(self,pos):
+        p2pos = self.canvas.coords(self.paddle1.id)
+        if pos[1] >= p2pos[1] and pos[3] <= p2pos[3]:
+            if pos[2] >= p2pos[0]:
+                return True
+            else:
+                return False
+        else:
+            return False
+    #def paddle(self,pos)
+        
+#ball = Ball(canvas,)
+
+win.mainloop()
